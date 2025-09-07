@@ -3,7 +3,6 @@ const fs = require("fs-extra");
 const path = require("path");
 const { execSync } = require("child_process");
 
-
 async function setupNext(projectPath, answers) {
   // 1️⃣ Create Next.js project with flags
   console.log("\n🚀 Creating Next.js project...");
@@ -19,8 +18,6 @@ async function setupNext(projectPath, answers) {
 
   // 2️⃣ Folder structure
   console.log("\n✨ Creating folder structure...");
-  // const folders = ["components", "hooks", "store", "utils", "assets"];
-  // folders.forEach((f) => fs.ensureDirSync(path.join(projectPath, "src", f)));
 
   const folders = [
     "src/components",
@@ -81,26 +78,6 @@ async function setupNext(projectPath, answers) {
 
     console.log(`✅ Added shadcn/ui components: ${answers.shadcn.join(", ")}`);
   }
-
-  //   // 4️⃣ Tailwind setup fix (App Router vs Pages Router)
-  //   if (answers.css === "Tailwind") {
-  //     console.log("\n🎨 Setting up Tailwind CSS...");
-  //     const appCssPath = path.join(projectPath,"src", "app", "globals.css");
-  //     const stylesCssPath = path.join(projectPath, "styles", "globals.css");
-
-  //     let cssPath = fs.existsSync(appCssPath) ? appCssPath : stylesCssPath;
-
-  //     if (fs.existsSync(cssPath)) {
-  //       fs.writeFileSync(
-  //         cssPath,
-  //         `
-  // @tailwind base;
-  // @tailwind components;
-  // @tailwind utilities;
-  //         `.trim()
-  //       );
-  //     }
-  //   }
 
   // 5️⃣ Chakra setup (App wrapped with ChakraProvider)
   if (answers.css === "Chakra") {
