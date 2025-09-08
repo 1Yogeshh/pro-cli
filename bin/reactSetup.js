@@ -173,6 +173,9 @@ export default authSlice.reducer;
   const componentsDir = path.join(projectPath, "src/components");
   fs.ensureDirSync(componentsDir);
 
+  // Prepare styles based on Tailwind selection
+  const isTailwind = answers.css === "Tailwind";
+
   // Input.jsx
   fs.writeFileSync(
     path.join(componentsDir, "Input.jsx"),
@@ -181,16 +184,30 @@ import React from "react";
 
 const Input = ({ label, type = "text", value, onChange, placeholder, error }) => {
   return (
-    <div style={{ display: "flex", flexDirection: "column", marginBottom: "10px" }}>
-      {label && <label>{label}</label>}
+    <div ${
+      isTailwind
+        ? 'className="flex flex-col mb-4"'
+        : 'style={{ display: "flex", flexDirection: "column", marginBottom: "10px" }}'
+    }>
+      {label && <label ${
+        isTailwind ? 'className="mb-1 font-medium"' : ""
+      }>{label}</label>}
       <input
         type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }}
+        ${
+          isTailwind
+            ? 'className="p-2 border border-gray-300 rounded"'
+            : 'style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }}'
+        }
       />
-      {error && <span style={{ color: "red", fontSize: "12px" }}>{error}</span>}
+      {error && <span ${
+        isTailwind
+          ? 'className="text-red-500 text-sm mt-1"'
+          : 'style={{ color: "red", fontSize: "12px" }}'
+      }>{error}</span>}
     </div>
   );
 };
@@ -211,14 +228,18 @@ const Button = ({ children, onClick, type = "button" }) => {
     <button
       type={type}
       onClick={onClick}
-      style={{
+      ${
+        isTailwind
+          ? 'className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"'
+          : `style={{
         padding: "10px",
         backgroundColor: "#007bff",
         color: "#fff",
         border: "none",
         borderRadius: "4px",
-        cursor: "pointer",
-      }}
+        cursor: "pointer"
+      }}`
+      }
     >
       {children}
     </button>
@@ -226,6 +247,254 @@ const Button = ({ children, onClick, type = "button" }) => {
 };
 
 export default Button;
+  `.trim(),
+    "utf-8"
+  );
+
+  // Card.jsx
+  fs.writeFileSync(
+    path.join(componentsDir, "Card.jsx"),
+    `
+import React from "react";
+
+const Card = ({ children }) => {
+  return (
+    <div ${
+      isTailwind
+        ? 'className="p-4 border border-gray-200 rounded shadow-sm"'
+        : 'style={{ padding: "16px", border: "1px solid #ccc", borderRadius: "6px", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}'
+    }>
+      {children}
+    </div>
+  );
+};
+
+export default Card;
+  `.trim(),
+    "utf-8"
+  );
+
+  // Avatar.jsx
+  fs.writeFileSync(
+    path.join(componentsDir, "Avatar.jsx"),
+    `
+import React from "react";
+
+const Avatar = ({ src, alt }) => {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      ${
+        isTailwind
+          ? 'className="w-12 h-12 rounded-full border border-gray-300"'
+          : 'style={{ width: "48px", height: "48px", borderRadius: "50%", border: "1px solid #ccc" }}'
+      }
+    />
+  );
+};
+
+export default Avatar;
+  `.trim(),
+    "utf-8"
+  );
+
+  // Dialog.jsx
+  fs.writeFileSync(
+    path.join(componentsDir, "Dialog.jsx"),
+    `
+import React from "react";
+
+const Dialog = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+  return (
+    <div ${
+      isTailwind
+        ? 'className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"'
+        : 'style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center" }}'
+    }>
+      <div ${
+        isTailwind
+          ? 'className="bg-white p-4 rounded shadow-lg"'
+          : 'style={{ backgroundColor: "#fff", padding: "20px", borderRadius: "8px", boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}'
+      }>
+        {children}
+        <button ${
+          isTailwind
+            ? 'className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"'
+            : 'style={{ marginTop: "10px", padding: "10px", backgroundColor: "#ff4d4f", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }}'
+        } onClick={onClose}>Close</button>
+      </div>
+    </div>
+  );
+};
+
+export default Dialog;
+  `.trim(),
+    "utf-8"
+  );
+
+  // DropdownMenu.jsx
+  fs.writeFileSync(
+    path.join(componentsDir, "DropdownMenu.jsx"),
+    `
+import React, { useState } from "react";
+
+const DropdownMenu = ({ label, options }) => {
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(null);
+
+  return (
+    <div ${
+      isTailwind
+        ? 'className="relative inline-block text-left"'
+        : 'style={{ position: "relative", display: "inline-block", textAlign: "left" }}'
+    }>
+      <button ${
+        isTailwind
+          ? 'className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"'
+          : 'style={{ padding: "10px", backgroundColor: "#eee", border: "1px solid #ccc", borderRadius: "4px", cursor: "pointer" }}'
+      } onClick={() => setOpen(!open)}>
+        {label}
+      </button>
+      {open && (
+        <ul ${
+          isTailwind
+            ? 'className="absolute mt-2 w-40 bg-white border border-gray-300 rounded shadow-lg"'
+            : 'style={{ position: "absolute", marginTop: "8px", width: "160px", backgroundColor: "#fff", border: "1px solid #ccc", borderRadius: "6px", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}'
+        }>
+          {options.map((opt, idx) => (
+            <li key={idx} ${
+              isTailwind
+                ? 'className="px-4 py-2 hover:bg-gray-100 cursor-pointer"'
+                : 'style={{ padding: "10px", cursor: "pointer" }}'
+            } onClick={() => { setSelected(opt); setOpen(false); }}>
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export default DropdownMenu;
+  `.trim(),
+    "utf-8"
+  );
+
+  // Checkbox.jsx
+  fs.writeFileSync(
+    path.join(componentsDir, "Checkbox.jsx"),
+    `
+import React from "react";
+
+const Checkbox = ({ label, checked, onChange }) => {
+  return (
+    <label ${
+      isTailwind
+        ? 'className="flex items-center space-x-2"'
+        : 'style={{ display: "flex", alignItems: "center", gap: "8px" }}'
+    }>
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        ${
+          isTailwind
+            ? 'className="h-4 w-4 text-blue-600 border-gray-300 rounded"'
+            : 'style={{ width: "16px", height: "16px" }}'
+        }
+      />
+      <span>${isTailwind ? "" : ""}{label}</span>
+    </label>
+  );
+};
+
+export default Checkbox;
+  `.trim(),
+    "utf-8"
+  );
+
+  fs.writeFileSync(
+    path.join(componentsDir, "Switch.jsx"),
+    `
+import React from "react";
+
+const Switch = ({ checked, onChange }) => {
+  return (
+    <button
+      onClick={() => onChange(!checked)}
+      ${
+        isTailwind
+          ? 'className={`${checked ? "bg-blue-600" : "bg-gray-300"} relative inline-flex h-6 w-11 items-center rounded-full transition-colors`}'
+          : 'style={{ width: "44px", height: "24px", backgroundColor: checked ? "#007bff" : "#ccc", borderRadius: "9999px", position: "relative", cursor: "pointer", transition: "background-color 0.2s" }}'
+      }
+    >
+      <span
+        ${
+          isTailwind
+            ? 'className={`${checked ? "translate-x-6" : "translate-x-1"} inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}'
+            : 'style={{ width: "16px", height: "16px", backgroundColor: "#fff", borderRadius: "9999px", position: "absolute", top: "4px", left: checked ? "24px" : "4px", transition: "left 0.2s" }}'
+        }
+      ></span>
+    </button>
+  );
+};
+
+export default Switch;
+  `.trim(),
+    "utf-8"
+  );
+
+  // Form.jsx
+  fs.writeFileSync(
+    path.join(componentsDir, "Form.jsx"),
+    `
+import React from "react";
+
+const Form = ({ onSubmit, children }) => {
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit();
+      }}
+      ${
+        isTailwind
+          ? 'className="space-y-4"'
+          : 'style={{ display: "flex", flexDirection: "column", gap: "16px" }}'
+      }
+    >
+      {children}
+    </form>
+  );
+};
+
+export default Form;
+  `.trim(),
+    "utf-8"
+  );
+
+  // Sonner.jsx (toast replacement)
+  fs.writeFileSync(
+    path.join(componentsDir, "Sonner.jsx"),
+    `
+import React from "react";
+
+const Sonner = ({ message }) => {
+  return (
+    <div ${
+      isTailwind
+        ? 'className="fixed bottom-4 right-4 p-4 bg-green-500 text-white rounded shadow-lg"'
+        : 'style={{ position: "fixed", bottom: "16px", right: "16px", padding: "12px", backgroundColor: "#28a745", color: "#fff", borderRadius: "6px", boxShadow: "0 2px 4px rgba(0,0,0,0.2)" }}'
+    }>
+      {message}
+    </div>
+  );
+};
+
+export default Sonner;
   `.trim(),
     "utf-8"
   );
@@ -397,31 +666,36 @@ export default Home;
 
     `.trim(),
 
-        "About.jsx": `import React from "react";
-${
-  answers.css !== "Tailwind" ? 'import "../styles/About.css";' : ""
-}
+      "About.jsx": `import React from "react";
+${answers.css !== "Tailwind" ? 'import "../styles/About.css";' : ""}
 const About = () => {
-  return <div className="${answers.css === "Tailwind" ? "h-screen w-full flex justify-center items-center" : "about-container"}">
-    <h1 className="${answers.css === "Tailwind" ? "text-center text-2xl" : "about-title"}">About Page</h1>
+  return <div className="${
+    answers.css === "Tailwind"
+      ? "h-screen w-full flex justify-center items-center"
+      : "about-container"
+  }">
+    <h1 className="${
+      answers.css === "Tailwind" ? "text-center text-2xl" : "about-title"
+    }">About Page</h1>
   </div>;
 };
 export default About;`.trim(),
 
-
-    "Contact.jsx": `import React from "react";
-${
-  answers.css !== "Tailwind" ? 'import "../styles/Contact.css";' : ""
-}
+      "Contact.jsx": `import React from "react";
+${answers.css !== "Tailwind" ? 'import "../styles/Contact.css";' : ""}
 const Contact = () => {
-  return <div className="${answers.css === "Tailwind" ? "h-screen w-full flex justify-center items-center" : "contact-container"}">
-    <h1 className="${answers.css === "Tailwind" ? "text-center text-2xl" : "contact-title"}">Contact Page</h1>
+  return <div className="${
+    answers.css === "Tailwind"
+      ? "h-screen w-full flex justify-center items-center"
+      : "contact-container"
+  }">
+    <h1 className="${
+      answers.css === "Tailwind" ? "text-center text-2xl" : "contact-title"
+    }">Contact Page</h1>
   </div>;
 };
 export default Contact;`.trim(),
-  };
-
-    
+    };
 
     // Write pages to src/pages
     Object.entries(pages).forEach(([fileName, content]) => {
