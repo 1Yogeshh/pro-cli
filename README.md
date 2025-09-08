@@ -2,8 +2,6 @@
 
 **Pro CLI** is a powerful command-line tool designed to help developers quickly bootstrap projects using **React**, **React Native**, and **Next.js**. It automates common setup tasks such as folder structure creation, Redux integration, dependency installation, Tailwind CSS configuration, authentication functionality, and more — saving you hours of setup time.
 
----
-
 ## 🚀 Features
 
 ✔ Generates folder structures for React, React Native, and Next.js  
@@ -16,15 +14,17 @@
 ✔ Supports JavaScript and TypeScript projects  
 ✔ Optimized for best practices and scalability
 
----
+## Install Pro CLI globally:
+
+```bash
+npm install -g pro-cli
+```
 
 ## 🚀 Create a new project:
 
 ```bash
 pro-cli
 ```
-
----
 
 ## 📂 Folder Structures
 
@@ -48,11 +48,9 @@ my-react-app/
 └── tailwind.config.js
 ```
 
----
-
 ### ✅ **React Native Folder Structure**
 
-````bash
+```bash
 my-react-native-app/
 ├── assets/
 ├── components/
@@ -65,12 +63,11 @@ my-react-native-app/
 ├── babel.config.js
 ├── metro.config.js
 └── package.json
-````
----
+```
 
 ### ✅ **Next.js Folder Structure**
 
-````bash
+```bash
 my-next-app/
 ├── public/
 ├── src/
@@ -84,8 +81,7 @@ my-next-app/
 ├── next.config.js
 ├── package.json
 └── tailwind.config.js
-````
----
+```
 
 ## 📦 Installed Dependencies
 
@@ -104,12 +100,3 @@ my-next-app/
 ### Authentication
 
 - Pre-built Login and Register pages with API service template
-
----
-
-## ⚙ Installation
-
-1. Install Pro CLI globally:
-   ```bash
-   npm install -g pro-cli
-   ```
