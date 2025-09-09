@@ -73,10 +73,13 @@ const run = async () => {
 
   const projectPath = path.join(process.cwd(), answers.projectName);
 
+  //react setup
   if (answers.framework === "React") await setupReact(projectPath, answers);
 
+  //nextjs setup
   if (answers.framework === "Next.js") await setupNext(projectPath, answers);
 
+  //react native setup
   if (answers.framework === "React Native") { await reactNativeSetup(projectPath, answers); }
 };
 
